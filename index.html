@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d20">
+<title>ALRSHYD Studio | AI Video Creator</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#080d20;color:#fff;
+ font-family:Arial,sans-serif;min-height:100vh
+}
+header{
+ display:flex;justify-content:space-between;
+ align-items:center;padding:20px 6%;
+ border-bottom:1px solid #26304c
+}
+.logo{font-size:23px;font-weight:bold}
+.logo span{color:#9b70ff}
+button{cursor:pointer;font-weight:bold}
+.lang{
+ background:#202943;color:white;border:1px solid #536080;
+ padding:9px 15px;border-radius:10px
+}
+main{max-width:1000px;margin:auto;padding:55px 20px}
+.hero{text-align:center;margin-bottom:35px}
+.tag{
+ color:#26d9e5;font-size:12px;
+ letter-spacing:2px
+}
+h1{font-size:38px;line-height:1.4}
+h1 span{color:#a77aff}
+.desc{color:#aeb9d0;line-height:1.9}
+.studio{
+ background:linear-gradient(145deg,#151e38,#10152b);
+ border:1px solid #34446a;border-radius:20px;
+ padding:25px;margin-top:30px
+}
+h2{font-size:20px}
+.modes{
+ display:grid;grid-template-columns:repeat(2,1fr);
+ gap:12px;margin:20px 0
+}
+.mode{
+ background:#202a45;border:1px solid #394a70;
+ color:white;border-radius:12px;padding:16px;
+ text-align:center
+}
+.mode.active{
+ border:1px solid #a77aff;
+ background:#302451;color:#d8c4ff
+}
+textarea{
+ width:100%;height:120px;resize:vertical;
+ background:#0c1429;color:white;
+ border:1px solid #39496d;border-radius:12px;
+ padding:15px;font-size:15px;outline:none
+}
+textarea:focus{border-color:#9b70ff}
+.create{
+ width:100%;padding:16px;margin-top:15px;
+ border:0;border-radius:12px;color:white;
+ font-size:16px;
+ background:linear-gradient(90deg,#7548e9,#08bccc)
+}
+.features{
+ display:grid;grid-template-columns:repeat(3,1fr);
+ gap:15px;margin-top:35px
+}
+.feature{
+ background:#151e35;border:1px solid #293856;
+ padding:20px;border-radius:14px
+}
+.feature p{color:#aeb9d0;font-size:13px;line-height:1.7}
+footer{
+ text-align:center;color:#7e8aa5;
+ padding:30px;border-top:1px solid #26304c;
+ margin-top:40px
+}
+@media(max-width:600px){
+ h1{font-size:29px}
+ main{padding:35px 15px}
+ .features{grid-template-columns:1fr}
+ .studio{padding:17px}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="logo">ALRSHYD <span>AI</span></div>
+ <button class="lang" onclick="toggleLang()">English</button>
+</header>
+
+<main>
+ <section class="hero">
+  <div class="tag">ARTIFICIAL INTELLIGENCE STUDIO</div>
+  <h1 id="title">حوّل أفكارك إلى <span>فيديوهات مذهلة</span></h1>
+  <p class="desc" id="desc">
+   أنشئ محتوى إبداعياً باستخدام الذكاء الاصطناعي.
+   لا تحتاج إلى خبرة في المونتاج.
+  </p>
+ </section>
+
+ <section class="studio">
+  <h2 id="createTitle">ماذا تريد أن تصنع اليوم؟</h2>
+
+  <div class="modes">
+   <button class="mode active" onclick="setMode(this,'Text to Video')">
+    🎬 Text to Video
+   </button>
+   <button class="mode" onclick="setMode(this,'Image to Video')">
+    🖼️ Image to Video
+   </button>
+   <button class="mode" onclick="setMode(this,'AI Script')">
+    ✍️ AI Script
+   </button>
+   <button class="mode" onclick="setMode(this,'Smart Subtitles')">
+    🌐 Smart Subtitles
+   </button>
+  </div>
+
+  <textarea id="prompt"
+   placeholder="اكتب فكرتك هنا... صف الفيديو الذي تريد إنشاءه"></textarea>
+
+  <button class="create" onclick="startCreate()" id="createButton">
+   ✨ ابدأ إنشاء مشروعك
+  </button>
+  <p id="message" class="desc" aria-live="polite"></p>
+ </section>
+
+ <section class="features">
+  <div class="feature">
+   <h3>🎥 AI Video</h3>
+   <p>تحويل الأفكار إلى مشاهد فيديو إبداعية.</p>
+  </div>
+  <div class="feature">
+   <h3>🌍 Smart Languages</h3>
+   <p>تجربة متعددة اللغات للعالم العربي وأفريقيا.</p>
+  </div>
+  <div class="feature">
+   <h3>⚡ Easy Creation</h3>
+   <p>واجهة بسيطة وسهلة الاستخدام من الهاتف.</p>
+  </div>
+ </section>
+</main>
+
+<footer>
+ ALRSHYD Studio © 2026 — Create the Future
+</footer>
+
+<script>
+let mode = "Text to Video";
+let english = false;
+
+function setMode(button, selected){
+ mode = selected;
+ document.querySelectorAll(".mode").forEach(b=>{
+  b.classList.remove("active");
+ });
+ button.classList.add("active");
+}
+
+function startCreate(){
+ const prompt = document.getElementById("prompt").value.trim();
+ const message = document.getElementById("message");
+
+ if(!prompt){
+  message.textContent = english
+   ? "Please describe your idea first."
+   : "يرجى كتابة وصف فكرتك أولاً.";
+  return;
+ }
+
+ message.textContent = english
+  ? "Your idea is ready. AI generation will be connected in the next development stage."
+  : "تم تسجيل فكرتك في الواجهة التجريبية. سنربط محرك توليد الذكاء الاصطناعي في المرحلة القادمة.";
+}
+
+function toggleLang(){
+ english = !english;
+ document.documentElement.lang = english ? "en" : "ar";
+ document.documentElement.dir = english ? "ltr" : "rtl";
+
+ document.querySelector(".lang").textContent =
+  english ? "العربية" : "English";
+
+ document.getElementById("title").innerHTML =
+  english ? 'Turn Ideas Into <span>Amazing Videos</span>'
+  : 'حوّل أفكارك إلى <span>فيديوهات مذهلة</span>';
+
+ document.getElementById("desc").textContent =
+  english ? "Create amazing content using artificial intelligence. No editing experience required."
+  : "أنشئ محتوى إبداعياً باستخدام الذكاء الاصطناعي. لا تحتاج إلى خبرة في المونتاج.";
+
+ document.getElementById("createTitle").textContent =
+  english ? "What would you like to create today?"
+  : "ماذا تريد أن تصنع اليوم؟";
+
+ document.getElementById("prompt").placeholder =
+  english ? "Describe the video you want to create..."
+  : "اكتب فكرتك هنا... صف الفيديو الذي تريد إنشاءه";
+
+ document.getElementById("createButton").textContent =
+  english ? "✨ Start Your Project"
+  : "✨ ابدأ إنشاء مشروعك";
+}
+</script>
+</body>
+</html>
